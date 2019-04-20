@@ -54,13 +54,23 @@ router.post('/register', (req, res) => {
 
                 // 암호화
                 bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    // bcrypt.hash(newUser.password, null, null, function(err, hash) {  <- 이렇게도 가능한 거 같음.
+                    // https://jungwoon.github.io/node.js/2017/08/07/bcrypt-nodejs/ <- 참고
+                    bcrypt.hash(newUser.password, salt, (err, hash) => { // 암호화 할 대상, salt, (err, hash)
                         if(err) throw err; // 암호화 실패하면 에러던짐
                         newUser.password = hash; // 성공하면 비밀번호에 해쉬값 넣음
                         newUser.save() // 저장
                             .then(user => res.json(user))
                             .catch(err => res.json(err));
                     });
+
+                    /**
+                    // 일반문자 : 해싱값 비교. (로그인 할 때 이렇게 쓰면 될 거 같음)
+                    bcrypt.compare("keyword", hash, function(err, res) {
+                        // "keyword"와 hash(해싱된 코드)를 비교하여 같으면 true 아니면 false를 반환합니다
+                    });
+                     */
+
                 });
             }
         })
