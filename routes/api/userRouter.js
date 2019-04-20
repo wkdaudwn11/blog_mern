@@ -14,6 +14,10 @@ const authCheck = passport.authenticate('jwt', {session: false});
 // Load User Model
 const userModel = require('../../models/userModel');
 
+// validator
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
+
 /**
  * @route   GET api/user/test
  * @desc    Tests user route
@@ -35,13 +39,26 @@ router.post('/register', (req, res) => {
 });
 */
 router.post('/register', (req, res) => {
+
+    // validate
+    const {errors, isValid} = validateRegisterInput(req.body);
+
+    //check validation
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
     userModel
         .findOne({email: req.body.email})
         .then(user => {
             if(user){
+                /*
                 return res.status(400).json({
                     msg: 'Email already exists'
                 });
+                */
+                errors.email = 'Email already exists';
+                return res.status(404).json(errors);
             }else{
                 // Create avatar
                 // http://www.gravatar.com/avatar/56a0311c22d8e7b6d152ca6b90aa2e46?s=200&r=pg&d=mm 대충 이런식으로 주소가 만들어짐.
@@ -91,6 +108,15 @@ router.post('/register', (req, res) => {
  * @access  Public
  */
 router.post('/login', (req, res) => {
+
+    // validate
+    const {errors, isValid} = validateLoginInput(req.body);
+
+    //check validation
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
     const email = req.body.email;
     const password = req.body.password;
 
@@ -98,9 +124,13 @@ router.post('/login', (req, res) => {
     userModel.findOne({email})
         .then(user => {
             if(!user){ // 존재하지 않는 회원이라면
+                /*
                 return res.status(404).json({
                     msg: "User Not Found"
                 });
+                */
+               errors.email = 'Users not fount';
+               return res.status(404).json(errors);
             }else{ //  존재하는 회원이라면
                 bcrypt
                     .compare(password, user.password) // bcrypt 함수인데, 입력한 값이랑 db에 등록되어있는 hash 값이랑 비교
@@ -125,9 +155,13 @@ router.post('/login', (req, res) => {
                             )
 
                         }else{
+                            /*
                             return res.status(404).json({
                                 msg: "Password incorrect"
                             });
+                            */
+                            errors.password = 'Password incorrect';
+                            return res.status(404).json(errors);
                         }
                     })
             }
