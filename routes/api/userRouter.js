@@ -3,6 +3,10 @@ const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 
+// jsonWebToken 쓰기 위한 변수
+const jwt = require('jsonwebtoken');
+const keys = require('../../config/keys');
+
 // Load User Model
 const userModel = require('../../models/userModel');
 
@@ -99,7 +103,24 @@ router.post('/login', (req, res) => {
                     .compare(password, user.password) // bcrypt 함수인데, 입력한 값이랑 db에 등록되어있는 hash 값이랑 비교
                     .then(isMatch => { // .compare의 retrun 값은 true, false. 이것을 isMatch에 넣어준 것임
                         if(isMatch){ // 일치한다면
-                            res.json({msg: 'Success'})
+                            
+                            //JWT start
+                            // User Matched
+                            const payload = {id: user.id, name: user.name, avatar: user.avatar};
+
+                            // Sign Token
+                            jwt.sign(
+                                payload,
+                                keys.secretOrKey,
+                                {expiresIn: 3600}, // 유효기간 36시간?
+                                (err,token) => {
+                                    res.json({
+                                        success: true,
+                                        token: 'Bearer ' + token // Bearer는 헤더에 넣어주는 건데, 다른 거 넣어도 되긴 함
+                                    })
+                                }
+                            )
+
                         }else{
                             return res.status(404).json({
                                 msg: "Password incorrect"
