@@ -7,6 +7,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 
+// passport
+const passport = require('passport');
+const authCheck = passport.authenticate('jwt', {session: false});
+
 // Load User Model
 const userModel = require('../../models/userModel');
 
@@ -86,7 +90,6 @@ router.post('/register', (req, res) => {
  * @desc    Login user / returning JWT (https://velopert.com/2389 <- JWT 참고)
  * @access  Public
  */
-
 router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -131,5 +134,24 @@ router.post('/login', (req, res) => {
         })
         .catch(err => res.json(err))
 });
+
+/**
+ * @route   GET api/user/current
+ * @desc    return current user
+ * @access  private (로그인을 한 후 사용하기 때문)
+ */
+// passport
+// 이걸 쓰면 config폴더의 passport.js에서 만든 모듈을 사용하게 되는 것임..
+router.get(
+    '/current', // 경로
+    authCheck, // passport.authenticate('jwt', {session: false});
+    (req, res) => {
+        res.json({
+            id: req.user.id,
+            name: req.user.name,
+            email: req.user.email
+        });
+    }
+)
 
 module.exports = router;
