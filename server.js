@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser'); // 이거해야 request.body... 이거 쓸 수 있음
 
 /** routing 경로 */
 const userRouter = require('./routes/api/userRouter');
@@ -7,6 +8,14 @@ const profileRouter = require('./routes/api/profileRouter');
 const postRouter = require('./routes/api/postRouter');
 
 const app = express();
+
+/**
+ * @bodyParser  mongoose
+ * @desc        body-parser setting
+ * @access      Public
+ */
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 /**
  * @database    mongoose
