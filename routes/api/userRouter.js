@@ -77,4 +77,38 @@ router.post('/register', (req, res) => {
         .catch(err => res.json(err))
 });
 
+/**
+ * @route   POST api/user/login
+ * @desc    Login user / returning JWT (https://velopert.com/2389 <- JWT 참고)
+ * @access  Public
+ */
+
+router.post('/login', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    // Find user by email
+    userModel.findOne({email})
+        .then(user => {
+            if(!user){ // 존재하지 않는 회원이라면
+                return res.status(404).json({
+                    msg: "User Not Found"
+                });
+            }else{ //  존재하는 회원이라면
+                bcrypt
+                    .compare(password, user.password) // bcrypt 함수인데, 입력한 값이랑 db에 등록되어있는 hash 값이랑 비교
+                    .then(isMatch => { // .compare의 retrun 값은 true, false. 이것을 isMatch에 넣어준 것임
+                        if(isMatch){ // 일치한다면
+                            res.json({msg: 'Success'})
+                        }else{
+                            return res.status(404).json({
+                                msg: "Password incorrect"
+                            });
+                        }
+                    })
+            }
+        })
+        .catch(err => res.json(err))
+});
+
 module.exports = router;
