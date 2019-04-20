@@ -8,6 +8,22 @@ const postRouter = require('./routes/api/postRouter');
 
 const app = express();
 
+/**
+ * @database    mongoose
+ * @desc        blog_mern Study
+ * @access      Public
+ */
+const db = require('./config/keys').mongoURI;
+mongoose.Promise = global.Promise; //  안해도 상관없는데 에러나서 걍 추가함
+mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true})
+    .then(() => console.log('MongoDb Connected...'))
+    .catch(err => console.log(err));
+
+/**
+ * @route   GET /
+ * @desc    Tests post route
+ * @access  Public
+ */
 app.get('/', (req, res) => res.send('Hello World'));
 
 /** use route */
