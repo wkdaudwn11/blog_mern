@@ -115,7 +115,7 @@ router.post('/login', (req, res) => {
                             jwt.sign(
                                 payload,
                                 keys.secretOrKey,
-                                {expiresIn: 3600}, // 유효기간 36시간?
+                                {expiresIn: 3600}, // 유효기간 1시간
                                 (err,token) => {
                                     res.json({
                                         success: true,
