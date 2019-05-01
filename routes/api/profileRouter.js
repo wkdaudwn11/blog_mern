@@ -137,6 +137,43 @@ router.post('/experience', authCheck, (req, res) => {
 });
 
 /**
+ * @route   POST api/profile/education
+ * @desc    ADD education to profile
+ * @access  Private
+ */
+router.post("/education", authCheck, (req, res) => {
+    const {errors, isValid} = validateEducationInput(req.body);
+
+    //check validation
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
+    profileModel.findOne({user: req.user.id})
+        .then(profile => {
+            const newEdu = {
+                school: req.body.school,
+                degree: req.body.degree,
+                fieldofstudy: req.body.fieldofstudy,
+                from: req.body.from,
+                to: req.body.to,
+                current: req.body.current,
+                description: req.body.description
+            }
+
+            console.log(newEdu);
+
+            // add to exp array
+            profileModel.education.shift(newEdu); // shift는 배열을 차곡차곡 순서대로 저장
+            profileModel
+                .save()
+                .then(profile => res.json(profile))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
  * @route   POST api/profile
  * @desc    Create or edit user profile
  * @access  Private
