@@ -137,6 +137,30 @@ router.post('/experience', authCheck, (req, res) => {
 });
 
 /**
+ * @route   Delete api/profile/experience/:exp_id
+ * @desc    Delete experience from profile
+ * @access  Private
+ */
+router.delete("/experience/:exp_id", authCheck, (req, res) => {
+    profileModel.findOne({user: req.user.id})
+        .then(profile => {
+            //get remove index
+            const removeIndex = profile.experience
+                .map(item => item.id)
+                .indexOf(req.params.exp_id);
+            
+            // splice out of array
+            profile.experience.splice(removeIndex, 1);
+
+            //save
+            profile.save()
+                .then(profile => res.json(profile))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
  * @route   POST api/profile/education
  * @desc    ADD education to profile
  * @access  Private
@@ -172,6 +196,46 @@ router.post("/education", authCheck, (req, res) => {
         })
         .catch(err => res.status(404).json(err));
 });
+
+/**
+ * @route   Delete api/profile/education/:exp_id
+ * @desc    Delete education from profile
+ * @access  Private
+ */
+router.delete("/education/:exp_id", authCheck, (req, res) => {
+    profileModel.findOne({user: req.user.id})
+        .then(profile => {
+            //get remove index
+            const removeIndex = profile.education
+                .map(item => item.id)
+                .indexOf(req.params.exp_id);
+            
+            // splice out of array
+            profile.education.splice(removeIndex, 1);
+
+            //save
+            profile.save()
+                .then(profile => res.json(profile))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
+ * @route   Delete api/profile
+ * @desc    Delete user and profile
+ * @access  Private
+ */
+router.delete("/", authCheck, (req, res) => {
+    profileModel.findByIdAndRemove({user: req.user.id})
+        .then(() => {
+            userModel.findOneAndRemove({_id: req.user.id})
+                .then(() => res.json({success: true}))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
 
 /**
  * @route   POST api/profile
