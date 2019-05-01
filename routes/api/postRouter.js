@@ -3,8 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 
-// Post Model
+// Model
 const postModel = require('../../models/postModel');
+const profileModel = require('../../models/profileModel');
 
 // Validation
 const validatePostInput = require('../../validation/post');
@@ -42,7 +43,48 @@ router.post("/", authCheck, (req, res) => {
     newPost.save()
         .then(post => res.json(post))
         .catch(err => res.status(400).json(err));
+});
 
+/**
+ * @route   Get api/post
+ * @desc    Get post
+ * @access  Public
+ */
+router.get("/", (req,res) => {
+    postModel.find()
+        .sort({date: -1}) // -1은 내림차순, 1은 오름차순
+        .then(posts => res.json(posts))
+        .catch(err => res.status(404).json({nopostsfound: 'No posts found'}));
+});
+
+/**
+ * @route   Get api/post/:id
+ * @desc    Get post by id
+ * @access  Pubild
+ */
+router.get("/:id", (req,res) => {
+    postModel.findById(req.params.id)
+        .then(posts => res.json(posts))
+        .catch(err => res.status(404).json(err));
+});
+
+/**
+ * @route   Delete api/post/:id
+ * @desc    Delete post by id
+ * @access  private
+ */
+router.delete("/:id", authCheck, (req,res) => {
+    profileModel.findOne({user: req.user.id}).then(profile => {
+        postModel.findById(req.params.id)
+            .then(post => {
+                // check for post owner
+                if(post.user.toString() !== req.user.id){ // 로그인 한 사람과 작성한 사람이 다르면 에러처리 (자신의 글만 삭제 되야 하기 때문)
+                    return res.status(404).json({noauthorized: 'User not authorized'});
+                }
+                post.remove().then(() => res.json({success: true}));
+            })
+            .catch(err => res.status(404).json({nopostsfound: 'No posts found'}));
+    });
 });
 
 module.exports = router;
