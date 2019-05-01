@@ -29,6 +29,8 @@ mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true})
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 
+mongoose.set('userFindAndModify', false); // 이것도 안해줘도 됨. 걍 옵션임.
+
 /**
  * @route   GET /
  * @desc    Tests post route
