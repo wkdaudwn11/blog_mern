@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 const validateProfileInput = require('../../validation/profile');
+const validateEducationInput = require('../../validation/education');
+const validateExperienceInput = require('../../validation/experience');
 
 const profileModel = require('../../models/profileModel');
 const userModel = require('../../models/userModel');
@@ -95,6 +97,41 @@ router.get("/user/:user_id", (req, res) => {
                 return res.status(404).json(errors);
             }
             res.json(profile);
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
+ * @route   POST api/profile/experience
+ * @desc    ADD experience to profile
+ * @access  Private
+ */
+router.post('/experience', authCheck, (req, res) => {
+    const {errors, isValid} = validateExperienceInput(req.body);
+
+    //check validation
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
+    profileModel.findOne({user: req.user.id})
+        .then(profile => {
+            const newExp = {
+                title: req.body.title,
+                company: req.body.company,
+                location: req.body.location,
+                from: req.body.from,
+                to: req.body.to,
+                current: req.body.current,
+                description: req.body.description
+            }
+
+            // add to exp array
+            profileModel.experience.shift(newExp); // unshift는 배열을 차곡차곡 순서대로 저장
+            profileModel
+                .save()
+                .then(profile => res.json(profile))
+                .catch(err => res.status(404).json(err));
         })
         .catch(err => res.status(404).json(err));
 });
