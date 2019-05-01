@@ -136,7 +136,6 @@ router.post("/unlike/:id", authCheck, (req,res) => {
                     post.save()
                         .then(post => {
                             res.json(post);
-                            console.log(post);
                         })
                         .catch(err => res.status(404).json(err));
                 })
@@ -200,7 +199,6 @@ router.delete('/comment/:id/:comment_id', authCheck, (req, res) => {
             post.save()
                 .then(post => {
                     res.json(post);
-                    console.log(post);
                 })
                 .catch(err => res.status(404).json(err));
             
