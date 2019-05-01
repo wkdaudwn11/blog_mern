@@ -145,4 +145,67 @@ router.post("/unlike/:id", authCheck, (req,res) => {
         .catch(err => res.status(404).json(err));
 });
 
+/**
+ * @route   Post api/post/comment/:id
+ * @desc    comment post
+ * @access  private
+ */
+router.post("/comment/:id", authCheck, (req, res) => {
+    const {errors, isValid} = validatePostInput(req.body);
+
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
+    postModel.findById(req.params.id)
+        .then(post => {
+            const newComment = {
+                text: req.body.text,
+                name: req.body.name,
+                avatar: req.body.avatar,
+                user: req.user.id
+            }
+    
+            // add to comment array
+            post.comments.unshift(newComment);
+            post
+                .save()
+                .then(post => res.json(post))
+                .catch(err => res.status(404).json(err));
+        })
+        .catch(err => res.status(404).json(err));
+});
+
+/**
+ * @route   Delete api/post/comment/:id/:comment_id
+ * @desc    delete comment
+ * @access  private
+ */
+router.delete('/comment/:id/:comment_id', authCheck, (req, res) => {
+    postModel.findById(req.params.id)
+        .then(post => {
+            if(post.comments.filter(comment => comment._id.toString() === req.params.comment_id).length === 0){
+                return res.status(404).json({commentnotexists: 'Commnet does not exist'});
+            }
+
+            // get remove index
+            const removeIndex = post.comments
+                .map(comment => comment._id.toString())
+                .indexOf(req.params.comment_id);
+
+            // splice out of array
+            post.comments.splice(removeIndex, 1);
+
+            //save
+            post.save()
+                .then(post => {
+                    res.json(post);
+                    console.log(post);
+                })
+                .catch(err => res.status(404).json(err));
+            
+        })
+        .catch(err => res.status(404).json(err));
+});
+
 module.exports = router;

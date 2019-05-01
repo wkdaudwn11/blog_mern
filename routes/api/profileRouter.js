@@ -127,8 +127,8 @@ router.post('/experience', authCheck, (req, res) => {
             }
 
             // add to exp array
-            profileModel.experience.shift(newExp); // unshift는 배열을 차곡차곡 순서대로 저장
-            profileModel
+            profile.experience.shift(newExp); // unshift는 배열을 차곡차곡 순서대로 저장
+            profile
                 .save()
                 .then(profile => res.json(profile))
                 .catch(err => res.status(404).json(err));
@@ -185,11 +185,9 @@ router.post("/education", authCheck, (req, res) => {
                 description: req.body.description
             }
 
-            console.log(newEdu);
-
             // add to exp array
-            profileModel.education.shift(newEdu); // shift는 배열을 차곡차곡 순서대로 저장
-            profileModel
+            profile.education.shift(newEdu); // shift는 배열을 차곡차곡 순서대로 저장
+            profile
                 .save()
                 .then(profile => res.json(profile))
                 .catch(err => res.status(404).json(err));
