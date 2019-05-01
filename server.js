@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 const db = require('./config/keys').mongoURI;
 mongoose.Promise = global.Promise; //  안해도 상관없는데 에러나서 걍 추가함
 mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true})
-    .then(() => console.log('MongoDb Connected...'))
+    .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 
 /**
@@ -39,7 +39,7 @@ app.get('/', (req, res) => res.send('Hello World'));
 // passport middlewears
 app.use(passport.initialize()); // passport 초기화
 
-// passport config
+// passport config mapping
 require('./config/passport')(passport);
 
 /** use route */

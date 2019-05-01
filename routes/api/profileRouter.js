@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 
+const validateProfileInput = require('../../validation/profile');
+
 const profileModel = require('../../models/profileModel');
 const userModel = require('../../models/userModel');
 
@@ -24,6 +26,7 @@ router.get('/', authCheck, (req, res) => { // authCheck를 넣었기 때문에, 
     const errors = {};
 
     profileModel.findOne({user: req.user.id})
+        .populate('user', ['name', 'avatar']) // name, avatar를 기준으로 불러옴? 권한 설정?
         .then(profile => {
             if(!profile){
                 errors.noprofile = 'There is no profile for this user';
@@ -40,6 +43,15 @@ router.get('/', authCheck, (req, res) => { // authCheck를 넣었기 때문에, 
  * @access  Private
  */
 router.post('/', authCheck, (req, res) => {
+
+    // validate
+    const {errors, isValid} = validateProfileInput(req.body);
+
+    //check validation
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
     // Get fields
     const profileFields = {};
     profileFields.user = req.user.id;
@@ -93,7 +105,7 @@ router.post('/', authCheck, (req, res) => {
                     })
                     .catch(err => res.json(err));
             }
-            
+
         })
         .catch(err => res.json(err));
 
