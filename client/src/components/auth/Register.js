@@ -24,6 +24,12 @@ class Register extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+    componentDidMount(){
+        if(this.props.auth.isAuthenticated){
+            this.props.history.push('/dashboard');
+        }
+    }
+
     // prop를 받을 때 실행되는 함수
     // 리액트 생명주기에서는 componentDidMount를 제일 많이 씀
     componentWillReceiveProps(nextProps){
