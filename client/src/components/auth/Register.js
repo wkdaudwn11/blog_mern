@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+
+//import axios from 'axios';
+import {withRouter} from 'react-router-dom';
+
 import classnames from 'classnames';
 import {connect} from 'react-redux';
 import {registerUser} from '../../actions/authActions';
@@ -19,6 +22,14 @@ class Register extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    // prop를 받을 때 실행되는 함수
+    // 리액트 생명주기에서는 componentDidMount를 제일 많이 씀
+    componentWillReceiveProps(nextProps){
+        if(nextProps.errors){ // nextProps에 에러가 존재한다면..
+            this.setState({ errors: nextProps.errors }); // state의 errors값을 변경
+        }
     }
 
     onChange(e) {
@@ -44,7 +55,7 @@ class Register extends Component {
             .then(res => console.log(res.data)) // 성공
             .catch(err => this.setState({errors: err.response.data})); // 실패
         */
-       this.props.registerUser(newUser);
+       this.props.registerUser(newUser, this.props.history); // history는 redux dev tool 에 찍기 위함
     }
 
     render() {
@@ -145,11 +156,13 @@ class Register extends Component {
  */
 Register.propTypes = { 
     registerUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    errors: state.errors
 });
 
 //export default Register;
@@ -157,4 +170,4 @@ const mapStateToProps = state => ({
 // register파일에 요청이 들어오고나서 처리를 한 후
 // 에러가 있을 수도 있고 정상적인 처리 일 수도 있는데
 // 그때 처리한 상태값을 prop으로 전달
-export default connect(mapStateToProps, {registerUser})(Register);
+export default connect(mapStateToProps, {registerUser})(withRouter(Register));
