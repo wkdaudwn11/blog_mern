@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import classnames from 'classnames';
+import {connect} from 'react-redux';
+import {registerUser} from '../../actions/authActions';
 
-export default class Register extends Component {
+class Register extends Component {
 
     constructor(){
         super();
@@ -35,18 +38,23 @@ export default class Register extends Component {
         };
 
         //axios는 통신
+        /*
         axios
             .post('/api/user/register', newUser) // 어디로 무엇을 보낼지
             .then(res => console.log(res.data)) // 성공
             .catch(err => this.setState({errors: err.response.data})); // 실패
+        */
+       this.props.registerUser(newUser);
     }
 
     render() {
 
         const {errors} = this.state;
+        const {user} = this.props.auth; // props.auth를 user로 규정.
 
         return (
             <div className="register">
+                {user ? user.name : null} {/** user가 참이면 이름이 찍히고 거짓이면 아무것도 안찍힘 (걍 테스트용) */}
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
@@ -131,3 +139,22 @@ export default class Register extends Component {
         )
     }
 }
+/** 
+ * proptypes랑 Proptypes랑 다른 것임..대문자는 내가 import 받은 거 
+ * 소문자는 react의 내장되어 있는 함수
+ */
+Register.propTypes = { 
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+//export default Register;
+
+// register파일에 요청이 들어오고나서 처리를 한 후
+// 에러가 있을 수도 있고 정상적인 처리 일 수도 있는데
+// 그때 처리한 상태값을 prop으로 전달
+export default connect(mapStateToProps, {registerUser})(Register);
