@@ -152,6 +152,8 @@ router.delete("/experience/:exp_id", authCheck, (req, res) => {
             // splice out of array
             profile.experience.splice(removeIndex, 1);
 
+            console.log(profile.experience);
+
             //save
             profile.save()
                 .then(profile => res.json(profile))
