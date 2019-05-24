@@ -3,9 +3,7 @@ import axios from 'axios';
 import {
     GET_PROFILE,
     PROFILE_LOADING,
-    GET_ERRORS,
     CLEAR_CURRNT_PROFILE
-
 } from './types';
 
 // Get current profile
@@ -21,8 +19,8 @@ export const getCurrentProfile = () => dispatch => {
         })
         .catch(err => {
             dispatch({
-                type: GET_ERRORS,
-                payload: {} // 데이터를 담는 그릇
+                type: GET_PROFILE,
+                payload: {}
             })
         })
 }
