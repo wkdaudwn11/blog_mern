@@ -3,13 +3,9 @@ import axios from 'axios';
 import {
     GET_PROFILE,
     PROFILE_LOADING,
-<<<<<<< b73b604edeb16945b74bb96fa86c3eaa883ecc0b
-    CLEAR_CURRNT_PROFILE
-=======
     CLEAR_CURRNT_PROFILE,
     GET_ERRORS,
     SET_CURRENT_USER
->>>>>>> Profile actions component & delete account
 } from './types';
 
 // Get current profile
@@ -43,8 +39,6 @@ export const clearCurrentProfile = () => {
     return {
         type: CLEAR_CURRNT_PROFILE
     };
-<<<<<<< b73b604edeb16945b74bb96fa86c3eaa883ecc0b
-=======
 };
 
 // Create Profile
@@ -60,7 +54,7 @@ export const createProfile = (profileData, history) => dispatch => {
         });
 };
 
-// Create Profile
+// Delete Profile
 export const deleteAccount = () => dispatch => {
     if(window.confirm('Are you sure? This can NOT be undone!')){
         axios
@@ -78,5 +72,4 @@ export const deleteAccount = () => dispatch => {
                 })
             );
     }
->>>>>>> Profile actions component & delete account
 };
