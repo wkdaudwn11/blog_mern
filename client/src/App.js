@@ -60,19 +60,20 @@ class App extends Component {
           <div className="App">
             <Navbar />
             <Route exact path="/" component={Landing} />
-            <div className="container">
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
+            <div className="container minHeight">
+              <span>
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
 
-              {/** dashboard는 인증이 된(로그인 한) 사람만 접근이 가능하게끔 */}
-              <Switch>
-                <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              </Switch>
+                {/** dashboard는 인증이 된(로그인 한) 사람만 접근이 가능하게끔 */}
+                <Switch>
+                  <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                </Switch>
 
-              <Switch>
-                <PrivateRoute exact path="/create-profile" component={CreateProfile} />
-              </Switch>
-
+                <Switch>
+                  <PrivateRoute exact path="/create-profile" component={CreateProfile} />
+                </Switch>
+              </span>
             </div>
             <Footer />
           </div>

@@ -37,3 +37,13 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.minHeight {
+  min-height: 76.5vh;
+  display: table;
+}
+
+.minHeight > span {
+  display: table-cell;
+  vertical-align: middle;
+}
