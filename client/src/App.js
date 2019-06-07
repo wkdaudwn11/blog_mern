@@ -30,6 +30,8 @@ import AddEducation from './components/add-credentials/AddEducation';
 import Profiles from './components/profiles/Profiles';
 import Profile from './components/profiles/Profile';
 
+import NotFound from './components/not-found/NotFound';
+
 // check for token
 if(localStorage.jwtToken){
   // Set auth token header auth
@@ -67,12 +69,10 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container minHeight">
-              <span>
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/profiles" component={Profiles} />
                 <Route exact path="/profile/:handle" component={Profile} />
-                
 
                 {/** dashboard는 인증이 된(로그인 한) 사람만 접근이 가능하게끔 */}
                 <Switch>
@@ -95,7 +95,7 @@ class App extends Component {
                   <PrivateRoute exact path="/add-education" component={AddEducation} />
                 </Switch>
 
-              </span>
+                <Route exact path="/not-found" component={NotFound} />
             </div>
             <Footer />
           </div>
