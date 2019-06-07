@@ -28,6 +28,7 @@ import AddExperience from './components/add-credentials/AddExperience';
 import AddEducation from './components/add-credentials/AddEducation';
 
 import Profiles from './components/profiles/Profiles';
+import Profile from './components/profiles/Profile';
 
 // check for token
 if(localStorage.jwtToken){
@@ -70,7 +71,7 @@ class App extends Component {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/profiles" component={Profiles} />
-                <Route exact path="/profiles/:handle" component={Profiles} />
+                <Route exact path="/profile/:handle" component={Profile} />
                 
 
                 {/** dashboard는 인증이 된(로그인 한) 사람만 접근이 가능하게끔 */}

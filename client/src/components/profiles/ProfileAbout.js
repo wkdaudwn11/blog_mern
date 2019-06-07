@@ -11,11 +11,11 @@ export default class ProfileAbout extends Component {
         const firstName = profile.user.name.trim().split(' ')[0];
 
         // Skill list
-        const skills = profile.skills.map(skill, index) => (
+        const skills = profile.skills.map((skill, index) => (
             <div key={index} className="p-3">
                 <i className="fa fa-check" /> {skill}
             </div>
-        )
+        ));
 
         return (
             <div class="row">
