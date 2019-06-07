@@ -70,6 +70,7 @@ class App extends Component {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/profiles" component={Profiles} />
+                <Route exact path="/profiles/:handle" component={Profiles} />
                 
 
                 {/** dashboard는 인증이 된(로그인 한) 사람만 접근이 가능하게끔 */}
