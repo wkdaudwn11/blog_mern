@@ -63,6 +63,8 @@ class Register extends Component {
             .then(res => console.log(res.data)) // 성공
             .catch(err => this.setState({errors: err.response.data})); // 실패
         */
+
+       // 입력값, 어디로 보낼지
        this.props.registerUser(newUser, this.props.history); // history는 redux dev tool 에 찍기 위함
     }
 

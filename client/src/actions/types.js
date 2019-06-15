@@ -1,3 +1,5 @@
+/** 데이터 흐름을 타입으로 추상화 (history로 볼 수 있음) */
+
 /** 테스트 */
 //export const TEST_DISPATCH = 'TEST_DISPATCH';
 
