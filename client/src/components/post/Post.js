@@ -6,6 +6,8 @@ import PostItem from '../posts/PostItem';
 import Spinner from '../common/Spinner';
 import { getPost } from '../../actions/postActions';
 import CommentForm from './CommentForm';
+import CommentFeed from './CommentFeed';
+
 class Post extends Component {
 
     componentDidMount(){
@@ -18,12 +20,14 @@ class Post extends Component {
         let postContent;
  
         if(post === null || loading || Object.keys(post).length === 0){ // post가 없다면 스피너
+        //if(post === null || loading){ // post가 없다면 스피너
             postContent = <Spinner />
         }else{
             postContent = (
                 <div>
                     <PostItem post={post} showActions={false} />
                     <CommentForm postId={post._id} />
+                    <CommentFeed postId={post._id} comments={post.comments} />
                 </div>
             );
         }
