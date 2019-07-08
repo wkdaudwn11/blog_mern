@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/blog_mern/static/css/main.4c679b0f.chunk.css",
+    "main.js": "/blog_mern/static/js/main.02e370c6.chunk.js",
+    "main.js.map": "/blog_mern/static/js/main.02e370c6.chunk.js.map",
+    "runtime~main.js": "/blog_mern/static/js/runtime~main.eaff83db.js",
+    "runtime~main.js.map": "/blog_mern/static/js/runtime~main.eaff83db.js.map",
+    "static/js/2.ae67c99b.chunk.js": "/blog_mern/static/js/2.ae67c99b.chunk.js",
+    "static/js/2.ae67c99b.chunk.js.map": "/blog_mern/static/js/2.ae67c99b.chunk.js.map",
+    "index.html": "/blog_mern/index.html",
+    "precache-manifest.e2ab0d64ec9ddb625542ee78bccce5a5.js": "/blog_mern/precache-manifest.e2ab0d64ec9ddb625542ee78bccce5a5.js",
+    "service-worker.js": "/blog_mern/service-worker.js",
+    "static/css/main.4c679b0f.chunk.css.map": "/blog_mern/static/css/main.4c679b0f.chunk.css.map",
+    "static/media/App.css": "/blog_mern/static/media/showcase.4b31330b.jpg"
+  }
+}
