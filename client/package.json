@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://wkdaudwn11.github.io/blog_mern",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "gh-pages": "^2.0.1",
     "jwt-decode": "^2.2.0",
